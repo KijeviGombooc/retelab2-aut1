@@ -1,12 +1,15 @@
 package hu.bme.aut.retelab2.repository;
 
-import hu.bme.aut.retelab2.domain.Ad;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.List;
+
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import hu.bme.aut.retelab2.domain.Ad;
+import hu.bme.aut.retelab2.secret.SecretGenerator;
 
 @Repository
 public class AdRepository {
@@ -16,7 +19,19 @@ public class AdRepository {
 
     @Transactional
     public Ad save(Ad feedback) {
+        feedback.setSecret(SecretGenerator.generate());
         return em.merge(feedback);
+    }
+
+    @Transactional
+    public Ad update(Ad ad) throws Exception {
+        Ad storedAd = findById(ad.getId());
+        if(!ad.getSecret().equals(storedAd.getSecret())) {
+            throw new Exception("Secrets do not match");
+        }
+        if(ad.getPrice() != null) storedAd.setPrice(ad.getPrice());
+        if(ad.getTitle() != null) storedAd.setTitle(ad.getTitle());
+        return em.merge(storedAd);
     }
 
     public List<Ad> findAll() {

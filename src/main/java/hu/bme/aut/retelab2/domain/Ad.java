@@ -18,6 +18,7 @@ public class Ad {
     private Integer price;
     @CreationTimestamp
     private Timestamp createTs;
+    private String secret;
 
     public Long getId() {
         return id;
@@ -49,5 +50,13 @@ public class Ad {
 
     public void setCreateTs(Timestamp createTs) {
         this.createTs = createTs;
+    }
+
+    public String getSecret() {
+        return secret;
+    }
+
+    public void setSecret(String secret) {
+        this.secret = secret;
     }
 }
