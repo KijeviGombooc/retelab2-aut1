@@ -1,4 +1,4 @@
-package scheduling;
+package hu.bme.aut.retelab2.scheduling;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,7 +16,7 @@ public class ExpirationScheduler {
     @Autowired
     private AdRepository adRepository;
 
-    @Scheduled(fixedDelay= 60000)
+    @Scheduled(fixedDelay= 6000)
     public void cleanExpired() {
         List<Ad> ads = adRepository.findAll();
         ads.forEach(ad -> {
