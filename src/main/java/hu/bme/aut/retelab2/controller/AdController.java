@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +27,13 @@ public class AdController {
     @GetMapping
     public List<Ad> getAll(@RequestParam(required = false, defaultValue = "0") Integer min, @RequestParam(required = false, defaultValue = "10000000") Integer max) {
         List<Ad> ads = adRepository.findAllBetweenPrice(min, max);
+        ads.forEach(ad -> ad.setSecret(null));
+        return ads;
+    }
+
+    @GetMapping("{tag}")
+    public List<Ad> getAll(@PathVariable String tag) {
+        List<Ad> ads = adRepository.findAllWithTag(tag);
         ads.forEach(ad -> ad.setSecret(null));
         return ads;
     }

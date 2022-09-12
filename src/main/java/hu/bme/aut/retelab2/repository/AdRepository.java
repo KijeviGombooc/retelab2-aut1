@@ -18,9 +18,10 @@ public class AdRepository {
     private EntityManager em;
 
     @Transactional
-    public Ad save(Ad feedback) {
-        feedback.setSecret(SecretGenerator.generate());
-        return em.merge(feedback);
+    public Ad save(Ad ad) {
+        if(ad.getTags() != null) ad.setTags(ad.getTags().stream().distinct().toList());
+        ad.setSecret(SecretGenerator.generate());
+        return em.merge(ad);
     }
 
     @Transactional
@@ -29,6 +30,7 @@ public class AdRepository {
         if(!ad.getSecret().equals(storedAd.getSecret())) {
             throw new Exception("Secrets do not match");
         }
+        if(ad.getTags() != null) ad.setTags(ad.getTags().stream().distinct().toList());
         if(ad.getPrice() != null) storedAd.setPrice(ad.getPrice());
         if(ad.getTitle() != null) storedAd.setTitle(ad.getTitle());
         return em.merge(storedAd);
@@ -57,5 +59,11 @@ public class AdRepository {
     public void deleteById(long id) {
         Ad todo = findById(id);
         em.remove(todo);
+    }
+
+    public List<Ad> findAllWithTag(String tag) {
+        return em.createQuery("SELECT a FROM Ad a JOIN a.tags t WHERE LOWER(t) = LOWER(?1)", Ad.class)
+            .setParameter(1, tag)
+        .getResultList();
     }
 }
