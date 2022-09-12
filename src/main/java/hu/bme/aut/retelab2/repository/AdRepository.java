@@ -1,7 +1,5 @@
 package hu.bme.aut.retelab2.repository;
 
-import java.time.LocalDateTime;
-import java.time.temporal.TemporalUnit;
 import java.util.List;
 
 import javax.persistence.EntityManager;
