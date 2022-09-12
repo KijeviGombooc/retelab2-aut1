@@ -1,6 +1,7 @@
 package hu.bme.aut.retelab2.domain;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.ElementCollection;
@@ -23,7 +24,8 @@ public class Ad {
     private String secret;
     @ElementCollection
     private List<String> tags;
-
+    private LocalDateTime expirationDate;
+    
     public Long getId() {
         return id;
     }
@@ -70,5 +72,13 @@ public class Ad {
 
     public void setTags(List<String> tags) {
         this.tags = tags;
+    }
+
+    public LocalDateTime getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(LocalDateTime expirationDate) {
+        this.expirationDate = expirationDate;
     }
 }
